@@ -1,7 +1,7 @@
 # basicauth
 Basic Authentication Token Generator in HTML5
 
-This project was made after trying to find anything similar online from a reputable source. Since it didn't exist, I went ahead and made it.
+This project was made after trying to find anything similar online from a source I could recognize. Since it didn't appear to exist, I went ahead and made it.
 
 Whatever is typed in the "username" and "password" fields will be converted from JavaScript's UTF-16 into UTF-8 bytes, concatenated with a single
 colon in between, and converted into a base64 token for use with HTTP Basic Authentication. The conversion happens as you type into the fields.
