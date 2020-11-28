@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>basicauth - Basic Authentication Token Generator</title>
+</head>
+<body>
+<h2>basicauth</h2>
+<h3>Basic Authentication Token Generator</h3>
+<p><label for="user">username:</label>
+<input type="text" id="user" name="user" size=16 /></p>
+<p><label for="pass">password:</label>
+<input type="password" id="pass" name="pass" size=16 /></p>
+<hr/>
+<p><label for="key">key:</label>
+<input type="text" id="key" name="key" size=32 /></p>
+<hr/>
+<h3>Instructions:</h3>
+<p>Enter username and password in the fields above.</p>
+<p>Authentication key will automatically generate in the "key" field below them.</p>
+<p>You may copy the key from the text field using ctrl-a ctrl-c (or cmd-a cmd-c on macOS),
+then paste into the appropriate field for your application.</p>
+<p>For use in HTTP Authorization header, remember to prefix with "<code>Basic </code>"
+<p>All processing of the username:password pair is done on your browser. No data is sent
+anywhere else by this page.</p>
+<hr/>
+<p>This project is open source under the MIT / Expat license. We encourage you to check
+that our code is doing exactly what you expect it to.</p>
+<p>Contributor(s): Aubrey Smith<p>
+<script>
+var user = document.getElementById("user");
+var pass = document.getElementById("pass");
+var key = document.getElementById("key");
+
+function toBytes(s) {
+	// accepts a string s;
+	// returns a byte array of UTF-8 characters, converted from JS's UTF-16.
+	let b = [];
+	for(let i=0; i<s.length; i++) {
+		let c = s.codePointAt(i);
+		// decode the code point into UTF-8 bytes
+		if(c < 0x80) {
+			// one byte
+			b.push(c);
+		} else if(c < 0x800) {
+			// two bytes
+			b.push((c & 0x7c0) >> 6 | 0xc0);
+			b.push((c & 0x3f) | 0x80);
+		} else if(c < 0x10000) {
+			// three bytes
+			b.push((c & 0xf000) >> 12 | 0xe0);
+			b.push((c & 0xfc0) >> 6 | 0x80);
+			b.push((c & 0x3f) | 0x80);
+		} else {
+			// four bytes, and made of a UTF-16 surrogate pair.
+			i++; // increment i early to skip the second half.
+			b.push((c & 0x1c0000) >> 18 | 0xf0);
+			b.push((c & 0x3f000) >> 12 | 0x80);
+			b.push((c & 0xfc0) >> 6 | 0x80);
+			b.push((c & 0x3f) | 0x80);
+		}
+	}
+	return String.fromCharCode(...b); // spread operator expands array
+}
+
+function calcKey(e) {
+	// activated when "user" or "pass" fields are altered.
+	// sets "key" field's value to a base64 conversion of the concatenation of
+	// the value of "user" + a colon + the value of "pass".
+	let u = user.value;
+	let p = pass.value;
+	let k = btoa(toBytes(u + ":" + p));
+	key.value = k;
+}
+
+user.addEventListener("input",calcKey);
+pass.addEventListener("input",calcKey);
+</script>
+</body>
+</html>
+
