@@ -25,6 +25,7 @@ manually. Sometimes this affects the whole app, while other times it affects
 just some modes of the program. Either way, I ran into one of these cases
 recently, so I felt I needed to make this.
 
-If you haven't dealt with a program that has this quirk, count yourself lucky!
-Someday, if you do need this, the tiny HTML file you see here will do the trick.
+If you haven't dealt with a program that has this quirk, just file this project
+for later! Someday, if you do need this, the tiny HTML file you see here will do
+the trick.
 
